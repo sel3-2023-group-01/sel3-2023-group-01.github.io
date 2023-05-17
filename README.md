@@ -19,3 +19,5 @@ You generally shouldn't have to do this, but if you want to split your team's pa
 ```shell
 hugo new <path>/index.md  # Ex: hugo new simulation-environment/terrain-generation/index.md
 ```
+
+When you're ready to create a PR for the page, make sure to set `draft` to `false` in the front matter (metadata at the top of the file).
