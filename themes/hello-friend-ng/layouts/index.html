@@ -4,7 +4,7 @@
 
 {{ define "main" }}
     <main aria-role="main">
-        <div>
+        <div class="pb-10">
             {{ if .Site.Params.Portrait.Path }}
                <img src="{{ .Site.Params.Portrait.Path }}" class="circle" alt="{{ .Site.Params.Portrait.Alt }}" style="max-width:{{ .Site.Params.Portrait.MaxWidth }}" />
             {{ end }}
@@ -18,6 +18,17 @@
                     {{ partial "social-icons.html" . }}
                 </div>
             {{- end }}
+        </div>
+        <div class="grid grid-cols-3 gap-x-20 my-10">
+            <a class="main-link" href="/simulation-environment">
+                Simulation Environment
+            </a>
+            <a class="main-link" href="/morphology-optimisation">
+                Morphology Optimisation
+            </a>
+            <a class="main-link" href="/controller-optimisation">
+                Controller Optimisation
+            </a>
         </div>
     </main>
 {{ end }}
