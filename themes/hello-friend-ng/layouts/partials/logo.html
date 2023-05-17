@@ -1,0 +1,5 @@
+<a href="{{ if .Site.Params.Logo.LogoHomeLink }}{{ .Site.Params.Logo.LogoHomeLink }}{{ else }}{{ .Site.BaseURL | relLangURL }}{{ end }}" style="text-decoration: none;">
+    <div class="logo">
+        {{ .Site.Title }}
+    </div>
+</a>
