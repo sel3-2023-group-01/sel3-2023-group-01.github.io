@@ -1,12 +1,15 @@
 baseURL = "http://sel3-2023-group-01.github.io/"
 languageCode = "en-UK"
-title = "SEL3 - Group 01"
+title = "The Fastest Brittle Star Alive"
 theme = "hello-friend-ng"
 
 [params]
     homeSubtitle = "Sofware Engineering Lab 3 (2023)"
     enableThemeToggle = true
 
+    intro = "You definitely know SpongeBob, but do you know about other creatures that live under water? Like a Brittle Star? In this project we're going to help the Brittle Star be the fastest version of himself. We'll train him in some environment, optimise his morphologyand learn him how to control his new body!"
+
     [[params.social]]
     name = "github"
     url = "https://github.com/sel3-2023-group-01/"
+
