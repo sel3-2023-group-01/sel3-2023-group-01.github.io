@@ -34,10 +34,14 @@ This was given by the start code and further improved with our extra additions t
 #### Cross-over
 We added this to enable the possibility of creating new genomes that are a mix between 2 parents. This is part of a standard evolutionary algorithm but was not yet implemented in the beginning. Because of this, this was 1 of our first steps in improving the evolutionary algorithm.
 
-#### Finetuning
-We noticed that later on during training we kept making big steps in how we mutated the genomes. This is not wanted since later on in the evolution the body has already evolved to a better place. To make optimal use if this we **decrease** the mutation size during evolution. This has the effect that we only make small precise changes at the end of the evolutionary algorithm. This improves the performance of the resulting robot
+#### Fine-Tuning
+We noticed that later on during training we kept making big steps in how we mutated the genomes. This is not wanted since later on in the evolution the body has already evolved to a better place. To make optimal use if this we **decrease the mutation size** during evolution. This has the effect that we only make small precise changes at the end of the evolutionary algorithm. This improves the performance of the resulting robot.
 
 ## Multiple environments
+We can train our robot on individually on multiple evironments. But what happens when we try to optimize the robot for multiple environments? This is what we tried to do.
+
+The main idea was to not just perform cross-over on the best robot of 1 environment, but to do this on the best robot of the multiple environments that we are training on.
+This way we try to keep speciation in the population (since a robot that performs well on flat level, might look different than a robot that performs well on a hilly level).
 
 ## Results
-another line
+TODO
