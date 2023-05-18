@@ -4,10 +4,10 @@ title = "The Fastest Brittle Star Alive"
 theme = "hello-friend-ng"
 
 [params]
-    homeSubtitle = "Sofware Engineering Lab 3 (2023)"
+    homeSubtitle = "Software Engineering Lab 3 (2023)"
     enableThemeToggle = true
 
-    intro = "You definitely know SpongeBob, but do you know about other creatures that live under water? Like a Brittle Star? In this project we're going to help the Brittle Star be the fastest version of himself. We'll train him in some environment, optimise his morphology and learn him how to control his new body!"
+    intro = "You definitely know SpongeBob, but do you know about other creatures that live under the sea? Like Brittle Stars? In this project we're going to help the Brittle Star become the fastest version of himself. We'll train him in some environments, optimise his morphology and learn him how to control his new body!"
 
     [[params.social]]
     name = "github"
