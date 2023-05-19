@@ -20,9 +20,24 @@ During training we give complete freedom to how it should be shaped. Based on ho
 
 ## CPG
 
+### Cartesian based
+
+The CPG is the part of the robot that makes a basic foreward movement we can give to the controller optimization.
+We started with a basic implementation of a CPG that was inspired by the paper "Learning to Move in Modular Robots using Central Pattern Generators and Online Optimization". In our first implementation when we where working with a cartesian we used 2 oscillators per arm to move in both the x and y direction. We also had a master oscillator in the disk of the robot to deligate the movement of the arms. 
+
+![Example of a resulting robot morphology](/images/cpg.png)
+
+#### Tendon based
+
+To have a more realistic robot we moved from our cartesian representation to a tendon based approach. In this implementation we added an oscillator per tendon who are connected in a ring like structure. This way we can have a more realistic movement of the arms. We also kept the master oscillator to the disk of the robot to deligate the movement of the arms. Because we want our robot to walk in a straight line we mirrored the oscillators of the arms on the other side of the robot.
+
+![Example of a resulting robot morphology](/images/cpgs_sync.png)
 
 #### Smoothening
-TODO: add video?
+
+To have a more realistic movement of the arms we added smoothening when the requested amplitudes change. This way the movement is not abruptly changed but transitions smoothly to the new amplitude. In the following video you can first see the robot moving foreward and then the right arms are ordered to move backwards. You can see that the movement of the arms starts to slow down and then moves backwards.
+
+{{< youtube 2auVt2h3ujw >}}
 
 ## The evolutionary algorithm
 
