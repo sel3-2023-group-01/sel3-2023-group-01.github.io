@@ -54,7 +54,7 @@ We noticed that later on during training we kept making big steps in how we muta
 
 This is visible in the graphs in the fact that with fine-tuning the performance stays **more stable at the end** (smaller jumps up and down) and it also takes longer for the robot until its performance reaches a **plateau**. While without fine-tuning we initially have better performance. This is because decreasing the mutation size (even a bit) in the beginning can have a significant impact on how long it takes until the robot has reached a quite stable place. 
 
-![Performance graph of using fine-tuning vs not using fine-tuning](/images/finetuningVsNoFinetuning.png)
+![Performance graph of using fine-tuning vs not using fine-tuning](/images/finetuningVsNoFinetuning.svg)
 
 
 ## Multiple environments
