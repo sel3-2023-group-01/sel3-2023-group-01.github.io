@@ -63,6 +63,9 @@ We can train our robot on individually on multiple environments. But what happen
 The main idea was to not just perform cross-over on the best robot of 1 environment, but to do this on the best robot of the multiple environments that we are training on.
 This way we try to keep speciation in the population (since a robot that performs well on flat level, might look different than a robot that performs well on a hilly level).
 
+Unfortunately, this experiment did not deliver any noteworthy results. As shown in the image below, even optimizing the robot separately on 3 different levels produces very similar results.
+![3 optimized robots with the level they were trained on](/images/morphology_with_map.png)
+
 ## Results
 It is really hard to draw strong conclusions from our testing since our equipment to execute all these tests is very limited compared to the runtime of the code. Optimizing 1 morphology + CPG for 200 generations takes around 1.5 hours in a M1 Pro CPU with 8 cores. Because of this it is not feasible for us to train large amounts of robots (with different seeds) and take the average of all of these runs.
 
