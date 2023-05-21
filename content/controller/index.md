@@ -68,19 +68,22 @@ The graph below is a good representatio of this unstable training, this was most
 #### hyperparameters
 The ppo algorithm from StableBaselines has an extended set of hyperparamters that can be tweaked to impact the training results. 
 We started off with the default hyperparamters and experimented our way in to a good working result. We ran many tests, often with not very good results. 
-We ended up changing the entropy coefficient for the loss function from 0 to 0.0001. This improved our overall training performance as can be seen in the graph below.
+We ended up changing the entropy coefficient for the loss function from 0 (red) to 0.0001 (blue). This improved our overall training performance as can be seen in the graph of the reward below.
 ![Training graph with different entropy on 1 million timesteps](/images/chart_controller_entcoef.png)
 We also ended up changing the n_steps, which was needed for a more discretized learning approach as will be described in the next section.
 
 #### discretized locations for an epoch
 The biggest reason why our ppo wasn't able to give good results on an extended training run with a million timesteps was due to the way targets spawned during training. The environment created targets in a random fashion, the distance from the target was fixed at 5 but the angle was random. This meant that during training a target spawned randomly on a circle with radius 5 around the brittlestar robot.
 Since the n_steps parameter of ppo was set at 2048 and the max runtime of a training at 20s, a single epoch would see only 4 target locations. It was thus possible that this epoch would see only targets in the same half circle or even the same quadrant leading to overfitting and unstable learning.
-We fixed this issue by discretizing the target locations so that every epoch would see a full circle of targets. Herefore the n_steps parameter had to be calculated as a function of the simulation time and the number of target locations. This led to way better results and is by far our biggest improvement towards a good ppo controller. We experimented with various numbers of target locations, INSERT GRAPH BELOW
+We fixed this issue by discretizing the target locations so that every epoch would see a full circle of targets. Herefore the n_steps parameter had to be calculated as a function of the simulation time and the number of target locations. This led to way better results and is by far our biggest improvement towards a good ppo controller. 
+We experimented with various numbers of target locations and settled with 5 locations for our final result. The graph below clearly show the difference in random locations (blue) versus discretized locations (green) for every epoch. Not only is the reward value way higher at the end, it also has a way more stable trend.
+![Training graph with random locations vs discretized locations](/images/chart_controller_locations.png)
 
 #### simulation time 8s vs 20s
 Another issue we stumbled upon was the fact that longer simulation times led to a more zigzaging robot. Ppo is build to maximize the reward during its full simulation time, so if the simulation time would be longer than necessary for the fastest path it would induce creativity to rake up extra rewards.
 This is exactly what happend with our initial simulation time of 20 seconds. This created a controller that took a zigzaging path towards the target since more steps would mean more rewards. 
 By reducing our simulation time to 8 seconds, ppo learned to take a more direct path towards the target. Within this simulation time, the robot could almost never reach the target, however this was not necessary since no reward was given upon reaching it. In fact this is a good thing since our reward was the square of difference in distance towards the target, taking big steps towards the target resulted in big rewards. The path of maximum reward over the full simulation time was now the path straight on to the target, which was exactly our goal.
+This is clearly visualized in the following graph showing the ppo controller with a simulation time of 8 seconds in green versus one with 20 seconds in blue.
 ![Training graph showing difference in simulation time, 20s vs 8s](/images/chart_controller_simtime.png)
 
 ### Result
