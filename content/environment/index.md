@@ -18,20 +18,51 @@ the tendon start will always be at the top of the circle (at + PI/2), this can b
 The simulation environment also has an option to place the tendons between segments,
 this is not used by the controller and morphology but it is available because it is more realistic.
 ## Environment
-- Air to water (viscosity, wind, density)
-- z-angle removed
-- FixedParam instead of Parameter
-- Env wrappers
-- Passing custom reward functions
-- Passing controller specification
+
+The main task of the environment is to expose tunable parameters to the other domains, 
+morphology optimization uses these parameters to i.e. increase the disc size, tweak the number of segments per arm, ...
+Controller optimization uses i.e. wrappers and configuration parameters to extend the environment and to set the target location.
+
+Some of the most important changes include a more realistic environment, all kinds of manipulations for the target position,
+exposure of important functionality and the integration of HD quality cameras.
+
+### Realism
+To make the simulation more realistic, we changed the medium of the simulation to water.
+We increased the density to 1.000 and the viscosity to 0.0009. 
+By doing this the brittle star lost the ability to jump around in the medium.
+MuJoCo also allows us to create currents with wind, although this is not used by the other domains, the environment still provides this parameter (for future research).
+
+### Target positions
+The simulation environment provides multiple parameters to control the location of targets.
+First of all, the distance from the origin can be set, knowing that the robot spawns at the origin, we can conclude that this is also the distance to the robot.
+By setting this parameter the rotation of the target will be randomised but the distance will remain the same.
+
+If the controller optimization wants to randomize this location, they can provide a range with a minimum and a maximum value.
+The target will spawn at a random angle but at a distance in the provided range.
+
+A final way to set the targets is by placing them along a circle at a certain distance, 
+the radian of this circle can be set by the previously described arguments but only the initial angle of the first target will be randomised.
+The gif below this paragraph gives an example of a circle with a radian of 5 and with 5 different target locations.
+The angle of the first target will be between 0 and 2*PI divided by the number of target locations.
+![Target locations evenly spread around circle](/images/pos.gif)
+
+Target opts:
 - Target distance randomization
 - Target distance in range
-- Custom cameras
 - Target spawn on equidistant points (fixed distance)
+
+- FixedParam instead of Parameter
+- Env wrappers
+- z-angle removed
+- Passing custom reward functions
+- Passing controller specification
+
+- Custom cameras (HD quality)
+
 ## Terrain Generation
 - Terrain using perlin noise & height maps
 - Default height maps
 - Interpolation
-- 
+
 
 ## CLI, builders and JSON schemas
