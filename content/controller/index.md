@@ -59,8 +59,9 @@ Our final reward function is simply the signed value of the square difference of
 In our effort to create a succesfull ppo controller we stumbled uppon a series of difficulties. We will shortly describe some of the most important ones here.
 
 #### training is very sensitive
-Right from the start of our first ppo training we noticed that it was very sensitive. The training reward was very unstable and went up and down all the time. In order to be able to compare different training settings we used longer trainingruns and went for a default of one million timesteps.
-INSERT GRAPH ?
+Right from the start of our first ppo training we noticed that it was very sensitive. The training reward was very unstable and did not always end on it's highest value. In order to be able to compare different training settings we used longer trainingruns and went for a default of one million timesteps.
+The graph below is a good representatio of this unstable training, this was mostly due to the reward function.
+![Training graph with irregular path](/images/chart_sensitive_training.png)
 
 #### hyperparameters
 The ppo algorithm from StableBaselines has an extended set of hyperparamters that can be tweaked to impact the training results. 
@@ -71,7 +72,7 @@ We also ended up changing the n_steps, which was needed for a more discretized l
 
 #### discretized locations for an epoch
 The biggest reason why our ppo wasn't able to give good results on an extended training run with a million timesteps was due to the way targets spawned during training. The environment created targets in a random fashion, the distance from the target was fixed at 5 but the angle was random. This meant that during training a target spawned randomly on a circle with radius 5 around the brittlestar robot.
-Since the n_steps parameter of ppo was set at 2048 and the max runtime of a training at 20s, a single epoch would see only 4 target locations. It was thus possible that this epoch would see only target in the same half circle or even the same quadrant leading to overfitting and unstable learning.
+Since the n_steps parameter of ppo was set at 2048 and the max runtime of a training at 20s, a single epoch would see only 4 target locations. It was thus possible that this epoch would see only targets in the same half circle or even the same quadrant leading to overfitting and unstable learning.
 We fixed this issue by discretizing the target locations so that every epoch would see a full circle of targets. Herefore the n_steps parameter had to be calculated as a function of the simulation time and the number of target locations. This led to way better results and is by far our biggest improvement towards a good ppo controller. We experimented with various numbers of target locations, INSERT GRAPH BELOW
 
 #### simulation time 8s vs 20s
