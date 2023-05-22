@@ -43,21 +43,20 @@ Now we were ready to give the project some more thought and do some experiments.
 We simplified our observationspace in order to simplify the model input and to speed up the training process. Our observationspace only contains a single parameter namely the normalized z angle towards the target. This is the angle between the fixed frontside (so not the front arm) of the robot and the target in a XY-plane. This means that the robot has no motion of its distance from the target, only a direction.
 
 ### The action space
-We choose to try and mimic a realistic brittle star, which doesn't turn all that often. Instead it just elevates the arm closest to the direction it wants to go to, and adjusts a little bit along the way. So we tried this, we gave our brittle star the ability to change his front arm, and go into another direction at once. This would hopefully result in a Brittlestar that moves in a quick and very natural way.
+We choose to try and mimic a realistic brittle star, which doesn't turn all that often. Instead it just elevates the arm closest to the direction it wants to go to, and walks in that direction. It only adjusts a little bit along the way. So we tried to simulate this. we gave our brittle star the ability to change his front arm, and walk into that direction. This would hopefully result in a Brittlestar that moves in a quick and very natural way, without the need to fully rotate when he wants to go in the opposite direction. 
 
-#### Implementation
-This would mean that our 5 arm Brittlestar could use anyone of its five arms as it's leading arm. The goal would be for this leading arm to be lifted up, while the other arms make the robot move towards the direction of the lifted arm. We also added the ability to adjust it's movement a little bit. So that he can slightly rotate to the left or slightly to the right (amplitudes).
+This means that our brittle star could use any one of its five arms as it's leading arm. The goal would be for this leading arm to be lifted up, while the other arms make the robot move towards the direction of the lifted arm. We also added the ability to adjust it's movement a little bit. So that he can slightly rotate to the left or slightly to the right (amplitudes).
 
-The main part for this is an interface we agreed upon with the morphology. This interface needs 3 main parameters:
-- the leading arm (an index)
+The main part for this, is an interface we agreed upon with the morphology. This interface has 3 main parameters:
+- the leading arm index
 - the amplitudes of all arms to the left of the leading arm
 - the amplitudes of all arms to the right of the leading arm
 
-![controller interface to morphology](/images/co_interface.png)
+![controller interface to morphology](/images/co/cpg_interface.png)
 
 The leading arm index allows us to pick a new (elevated) front arm. And the amplitudes of the left and right side allow us to steer a bit when needed.
 
-As we use a discreet set of actions, we can't just let PPO estimate these amplitudes. Thus we defined some amplitudes ourselves, and let the PPO choose from them. Per leading arm we added 3 choices for the amplitudes, one choice makes the brittle star walk in the direction of the leading arm, one turns slightly to the left and one turns slightly to the right.
+As we use a discrete set of actions, we can't just let PPO estimate the amplitudes. Thus we defined some amplitudes ourselves, and let the PPO choose from them. Per leading arm we added 3 choices for the amplitudes, one choice makes the brittle star walk in the direction of the leading arm, one turns slightly to the left and one turns slightly to the right.
 
 
 ## Rewards
@@ -66,18 +65,22 @@ Our reward functions needs to make the connection between our observed angle and
 Our final reward function is simply the signed value of the square difference of the target distances.
 
 ## Back to PPO
-In our effort to create a succesfull ppo controller we stumbled uppon a series of difficulties. We will shortly describe some of the most important ones here.
+With these new changes, our PPO controller was able to somtimes learn something. What a relief!
+
+But in our effort to create a succesfull PPO controller we stumbled uppon a series of difficulties. We will shortly describe some of the most important ones here.
 
 #### training is very sensitive
 Right from the start of our first ppo training we noticed that it was very sensitive. The training reward was very unstable and did not always end on it's highest value. In order to be able to compare different training settings we used longer trainingruns and went for a default of one million timesteps.
-The graph below is a good representatio of this unstable training, this was mostly due to the reward function.
-![Training graph with irregular path](/images/chart_sensitive_training.png)
+The graph below is a good representatio of this unstable training, this was mostly due to the reward function that at the time still included the huge bonus reward when the brittle star reached the target (which PPO didn't like).
+![Training graph with irregular path](/images/co/chart_sensitive_training.png)
 
 #### hyperparameters
 The ppo algorithm from StableBaselines has an extended set of hyperparamters that can be tweaked to impact the training results. 
 We started off with the default hyperparamters and experimented our way in to a good working result. We ran many tests, often with not very good results. 
 We ended up changing the entropy coefficient for the loss function from 0 (red) to 0.0001 (blue). This improved our overall training performance as can be seen in the graph of the reward below.
-![Training graph with different entropy on 1 million timesteps](/images/chart_controller_entcoef.png)
+
+![Training graph with different entropy on 1 million timesteps](/images/co/chart_controller_entcoef.png)
+
 We also ended up changing the n_steps, which was needed for a more discretized learning approach as will be described in the next section.
 
 #### discretized locations for an epoch
@@ -85,14 +88,14 @@ The biggest reason why our ppo wasn't able to give good results on an extended t
 Since the n_steps parameter of ppo was set at 2048 and the max runtime of a training at 20s, a single epoch would see only 4 target locations. It was thus possible that this epoch would see only targets in the same half circle or even the same quadrant leading to overfitting and unstable learning.
 We fixed this issue by discretizing the target locations so that every epoch would see a full circle of targets. Herefore the n_steps parameter had to be calculated as a function of the simulation time and the number of target locations. This led to way better results and is by far our biggest improvement towards a good ppo controller. 
 We experimented with various numbers of target locations and settled with 5 locations for our final result. The graph below clearly show the difference in random locations (blue) versus discretized locations (green) for every epoch. Not only is the reward value way higher at the end, it also has a way more stable trend.
-![Training graph with random locations vs discretized locations](/images/chart_controller_locations.png)
+![Training graph with random locations vs discretized locations](/images/co/chart_controller_locations.png)
 
 #### simulation time 8s vs 20s
 Another issue we stumbled upon was the fact that longer simulation times led to a more zigzaging robot. Ppo is build to maximize the reward during its full simulation time, so if the simulation time would be longer than necessary for the fastest path it would induce creativity to rake up extra rewards.
 This is exactly what happend with our initial simulation time of 20 seconds. This created a controller that took a zigzaging path towards the target since more steps would mean more rewards. 
 By reducing our simulation time to 8 seconds, ppo learned to take a more direct path towards the target. Within this simulation time, the robot could almost never reach the target, however this was not necessary since no reward was given upon reaching it. In fact this is a good thing since our reward was the square of difference in distance towards the target, taking big steps towards the target resulted in big rewards. The path of maximum reward over the full simulation time was now the path straight on to the target, which was exactly our goal.
 This is clearly visualized in the following graph showing the ppo controller with a simulation time of 8 seconds in green versus one with 20 seconds in blue.
-![Training graph showing difference in simulation time, 20s vs 8s](/images/chart_controller_simtime.png)
+![Training graph showing difference in simulation time, 20s vs 8s](/images/co/chart_controller_simtime.png)
 
 ### Result
 VIDEO and discuss result
