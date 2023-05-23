@@ -81,6 +81,9 @@ This way we try to keep speciation in the population (since a robot that perform
 Unfortunately, this experiment did not deliver any noteworthy results. As shown in the image below, even optimizing the robot separately on 3 different levels produces very similar results.
 ![3 optimized robots with the level they were trained on](/images/morphology_with_map.png)
 
+We also create a video that shows how each robot moves in the environment it was trained on.
+{{< youtube 21Wf1CAhutc >}}
+
 ## Results
 It is really hard to draw strong conclusions from our testing since our equipment to execute all these tests is very limited compared to the runtime of the code. Optimizing 1 morphology + CPG for 200 generations takes around 1.5 hours on a M1 Pro CPU with 8 cores. Because of this it is not feasible for us to train large amounts of robots (with different seeds) and take the average of all of these runs.
 
