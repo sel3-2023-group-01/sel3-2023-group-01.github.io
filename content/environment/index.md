@@ -87,5 +87,15 @@ All of these are generated with png images that can be found in the simulation e
 The robot should spawn a little higher than the floor and fall down to avoid clipping, 
 if the terrain is too rough and the robot does get stuck the *spawn-height* can be altered by providing the correct arguments.
 
-## CLI, builders and JSON schemas
-To ease the process of making a robot with the required specifications we added
+## CLI, JSON schemas and builders
+To ease the process of making a robot and environment with the required specifications we added a CLI, builders and a JSON schema.
+The CLI provides commands for generating *heightmaps and XML files* for MuJoCo.
+You can use specfiles to create custom XML files, more information can be found in the CLI documentation.
+
+The creation of these specfiles is simplified by the provided JSON schema.
+This schema provides the user with *autocompletion* for the JSON/specfile in their IDE.
+Needless to say that this speeds up the creation of these files tremendously.
+
+To do all of these things we use builders, the builders *translate* the provided JSON to an actual robot.
+They provide default values and create the necessary parts to from an actual brittle star.
+
