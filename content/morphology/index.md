@@ -73,7 +73,9 @@ This is visible in the graphs in the fact that with fine-tuning the performance 
 
 
 ## Multiple environments
-We can train our robot on individually on multiple environments. But what happens when we try to optimize the robot for multiple environments? This is what we tried to do.
+We can optimize our robot for 1 specific environment, but what happens if we attempt to optimize for multiple environments?
+The resulting goal is to create some *jack of all trades, master of none* brittle star.
+This is what we attempted to do.
 
 The main idea was to not just perform cross-over on the best robot of 1 environment, but to do this on the best robot of the multiple environments that we are training on.
 This way we try to keep speciation in the population (since a robot that performs well on flat level, might look different than a robot that performs well on a hilly level).
