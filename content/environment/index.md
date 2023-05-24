@@ -46,10 +46,7 @@ The gif below this paragraph gives an example of a circle with a radian of 5 and
 The angle of the first target will be between 0 and 2*PI divided by the number of target locations.
 ![Target locations evenly spread around circle](/images/pos.gif)
 
-Target opts:
-- Target distance randomization
-- Target distance in range
-- Target spawn on equidistant points (fixed distance)
+### Miscellaneous functionality
 
 - FixedParam instead of Parameter
 - Env wrappers
@@ -57,7 +54,21 @@ Target opts:
 - Passing custom reward functions
 - Passing controller specification
 
-- Custom cameras (HD quality)
+### Cameras 
+The simulation environment adds two cameras so that we can record our findings in an efficient manner.
+This means that for the normal locomotion environment there are now 3 cameras, 
+the first one (index 0) is the free camera, the second one (index 1) is one that tracks the brittle star 
+and the third camera provides a topdown view of the target. 
+Our other environment, the Terrain Generation Environment only has the latter two cameras. 
+For this environment the indices are 0 and 1 instead of 1 and 2.
+The quality of these cameras is set to 1920x1080 during the initialization of the environment.
+When rendering a video one can pass the width and height parameters to the `render` method to actually record with this quality.
+
+#### Camera that tracks the brittle star (1920x1080):
+![Tracking camera](/images/camera1.png)
+
+#### Camera that gives a topdown view of the target (1920x1080):
+![Topdown view camera](/images/camera2.png)
 
 ## Terrain Generation
 - Terrain using perlin noise & height maps
