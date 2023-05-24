@@ -59,7 +59,7 @@ The simulation environment adds two cameras so that we can record our findings i
 This means that for the normal locomotion environment there are now 3 cameras, 
 the first one (index 0) is the free camera, the second one (index 1) is one that tracks the brittle star 
 and the third camera provides a topdown view of the target. 
-Our other environment, the Terrain Generation Environment only has the latter two cameras. 
+Our other environment, the Terrain Generation Environment only has the two latter cameras. 
 For this environment the indices are 0 and 1 instead of 1 and 2.
 The quality of these cameras is set to 1920x1080 during the initialization of the environment.
 When rendering a video one can pass the width and height parameters to the `render` method to actually record with this quality.
@@ -71,9 +71,21 @@ When rendering a video one can pass the width and height parameters to the `rend
 ![Topdown view camera](/images/camera2.png)
 
 ## Terrain Generation
-- Terrain using perlin noise & height maps
-- Default height maps
-- Interpolation
+Apart from the original `LocomotionEnvironmentConfig` we also provide a `TerrainGenerationEnvironmentConfig`.
+This configuration class returns an environment with a *custom terrain*. 
+These terrains can be provided by the user as png files. These terrains should be topdown greyscale images of the terrain.
+The user can either provide these individually or as a map, if a map is provided a terrain will be chosen randomly.
 
+Another possibility is *random generation*, these maps are generated using perlin noise and can be used to make an infinite amount of random terrains.
+By using perlin noise the difference between 2 adjacent pixels is minimized to avoid steep climbs or drops.
+
+We also provide *6 default heightmaps* that are ordered by increasing difficulty, 
+the size and height of these maps can be adjusted by providing the correct arguments.
+All of these are generated with png images that can be found in the simulation environment repository.
+![Topdown view camera](/images/all-levels-trans.png)
+
+The robot should spawn a little higher than the floor and fall down to avoid clipping, 
+if the terrain is too rough and the robot does get stuck the *spawn-height* can be altered by providing the correct arguments.
 
 ## CLI, builders and JSON schemas
+To ease the process of making a robot with the required specifications we added
