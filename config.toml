@@ -4,6 +4,7 @@ title = "The Fastest Brittle Star Alive"
 theme = "hello-friend-ng"
 
 [params]
+    displayTitle = "SEL3 - Group 1"
     homeSubtitle = "Software Engineering Lab 3 (2023)"
     enableThemeToggle = true
 
