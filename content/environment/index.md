@@ -44,7 +44,7 @@ A final way to set the targets is by placing them along a *circle* at a certain 
 the radian of this circle can be set by the previously described arguments but only the initial angle of the first target will be randomised.
 The gif below this paragraph gives an example of a circle with a radian of 5 and with 5 different target locations.
 The angle of the first target will be between 0 and 2*PI divided by the number of target locations.
-![Target locations evenly spread around circle](/images/pos.gif)
+![Target locations evenly spread around circle](/images/target_pos.gif)
 
 ### Miscellaneous functionality
 
