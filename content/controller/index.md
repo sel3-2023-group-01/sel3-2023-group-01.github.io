@@ -32,7 +32,7 @@ We chose for Proximal Policy Optimization (PPO), since it is supposed to learn r
 We use [StableBaselines](https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html) as the framework for our PPO reinforcement learning.
 This allows us to perform PPO without having to fully implement this ourselves. We use PPO with a mutli-input policy and a ReLu activation function. 
 
-This wasn't very succesful, as this algorithm (and deep RL algorithm in general) are very sensitive, and thus hard to get it to actually learn something.
+This wasn't very succesful, as this algorithm (and deep RL algorithm in general) are very sensitive and thus hard to get it to actually learn something.
 
 ## What now?
 Now we were ready to give the project some more thought and do some experiments. We'll explain the 3 important parts of RL: observations, actions and rewards. And what we changed for the PPO to work
@@ -41,7 +41,7 @@ Now we were ready to give the project some more thought and do some experiments.
 We simplified our observation space in order to simplify the model input and to speed up the training process. Our observation space only contains a single parameter namely the normalized z angle towards the target. This is the angle between the fixed frontside (so not the front arm) of the robot and the target in a XY-plane. This means that the robot has no motion of its distance from the target, only a direction.
 
 ## The action space
-We choose to try and mimic a realistic brittle star, which doesn't turn all that often. Instead it just elevates the arm closest to the direction it wants to go to, and walks in that direction. It only adjusts a little bit along the way. So we tried to simulate this. we gave our brittle star the ability to change his front arm, and walk into that direction. This would hopefully result in a Brittlestar that moves in a quick and very natural way, without the need to fully rotate when he wants to go in the opposite direction. 
+We tried to mimic a realistic brittle star, which doesn't turn all that often. Instead it just elevates the arm closest to the direction it wants to go to and walks in that direction. It only adjusts a little bit along the way, so we tried to simulate this. We gave our brittle star the ability to change his front arm and walk into that direction. This would hopefully result in a Brittlestar that moves in a quick and very natural way, without the need to fully rotate when he wants to go in the opposite direction. 
 
 This means that our brittle star could use any one of its five arms as it's leading arm. The goal would be for this leading arm to be lifted up, while the other arms make the robot move towards the direction of the lifted arm. We also added the ability to adjust it's movement a little bit. So that he can slightly rotate to the left or slightly to the right (amplitudes).
 
@@ -54,7 +54,7 @@ The main part for this, is an interface we agreed upon with the morphology. This
 
 The leading arm index allows us to pick a new (elevated) front arm. And the amplitudes of the left and right side allow us to steer a bit when needed.
 
-As we use a discrete set of actions, we can't just let PPO estimate the amplitudes. Thus we defined some amplitudes ourselves, and let the PPO choose from them. Per leading arm we added 3 choices for the amplitudes, one choice makes the brittle star walk in the direction of the leading arm, one turns slightly to the left and one turns slightly to the right.
+As we use a discrete set of actions, we can't just let PPO estimate the amplitudes. Thus we defined some amplitudes ourselves and let the PPO choose from them. Per leading arm we added 3 choices for the amplitudes, one choice makes the brittle star walk in the direction of the leading arm, one turns slightly to the left and one turns slightly to the right.
 
 In case you are wondering what exactly we mean by "leading arm", below is a video showing this type of movement. This controller only had the ability to change the leading arm, there was no ability to adapt the amplitudes.
 
@@ -98,15 +98,15 @@ By reducing our simulation time to 8 seconds, PPO learned to take a more direct 
 ![Training graph showing difference in simulation time, 20s vs 8s](/images/co/chart_controller_simtime.png)
 
 ## Results
-As our research is focussed upon the speed of the brittle star, our metric for comparison is mainly based on time-to-target, or how long it takes for the robot to reach the target. We Made controllers having different abilities, and compared them in 5 different settings. In total we compared 3 controllers, measuring the impact of adding a leading arm to a brittle star simulation on it's time-to-target. The first controller, "turning", could only turn, so he could not change his leading arm. The second controller "leading arm" could only change his leading arm, and had to walk in that direction without turning. The (third) last controller, could do both. He had the ability to change his leading arm, as well as turn a bit to adjust it's path. The 5 different settings are 5 targets well distributed around the robot like in the picture below.
+As our research is focussed upon the speed of the brittle star, our metric for comparison is mainly based on time-to-target, or how long it takes for the robot to reach the target. We made a few controllers having different abilities and compared them in 5 different settings. In total we compared 3 controllers, measuring the impact of adding a leading arm to a brittle star simulation on it's time-to-target. The first controller, "turning", could only turn, so he could not change his leading arm. The second controller "leading arm" could only change his leading arm and had to walk in that direction without turning. The (third) last controller, could do both. He had the ability to change his leading arm, as well as turn a bit to adjust it's path. The 5 different settings are 5 targets well distributed around the robot like in the picture below.
 
 ![5 different settings](/images/co/all_points.png)
 
-We let each controller try and walk towards each of these targets, and measured how long it took. The total time-to-target for each controller for all 5 situations, is shown below. The controller with the lowest score (lowest total time), is thus the best / fastest controller. We can see that the "turning" controller is always the slowest. This confirms our suspicion that a brittle star that can only turn, is in fact slower than one who can just change it's direction at once, without the need of turning. It is clearly visible that the two controllers who do have the ability to change their leading arm, are faster. It is quite odd that the controller that has the ability to do both (change leading arm and turn) is a bit slower then the "leading arm" controller, who can't turn / adjust it's course. We think this might be due to the fact that it is harder to train, as it has a larger action space. But we're happy to see it was a neck-by-neck race, and it only got beaten by a few seconds (6 to be precise).
+We let each controller try to walk towards each of these targets and measured how long it took. The total time-to-target for each controller for all 5 situations, is shown below. The controller with the lowest score (lowest total time), is thus the best / fastest controller. We can see that the "turning" controller is always the slowest. This confirms our suspicion that a brittle star that can only turn, is in fact slower than one who can just change it's direction at once, without the need of turning. It is clearly visible that the two controllers who do have the ability to change their leading arm, are faster. It is quite odd that the controller that has the ability to do both (change leading arm and turn) is a bit slower then the "leading arm" controller, who can't turn / adjust it's course. We think this might be due to the fact that it is harder to train, as it has a larger action space. But we're happy to see it was a neck-by-neck race and it only got beaten by a few seconds (6 to be precise).
 
 ![time-to-target](/images/co/time-to-target.png)
 
 
 ## Discussion
 
-Although we tested quite a bit, and the controller steered the robot in the right direction most of the time, there were also times when the target was completely ignored and the brittle star went on a little adventure. But we believe we were able to show that adding the ability to change the leading arm, is a great boost in decreasing the time it takes for the brittle star to reach the target.
+Although we tested quite a bit and the controller steered the robot in the right direction most of the time, there were also times when the target was completely ignored and the brittle star went on a little adventure. But we believe we were able to show that adding the ability to change the leading arm, is a great boost in decreasing the time it takes for the brittle star to reach the target.
