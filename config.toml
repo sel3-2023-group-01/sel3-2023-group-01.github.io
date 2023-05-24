@@ -12,4 +12,7 @@ theme = "hello-friend-ng"
     [[params.social]]
     name = "github"
     url = "https://github.com/sel3-2023-group-01/"
-
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            hardWraps = true
