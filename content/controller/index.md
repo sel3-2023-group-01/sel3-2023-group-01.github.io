@@ -56,6 +56,10 @@ The leading arm index allows us to pick a new (elevated) front arm. And the ampl
 
 As we use a discrete set of actions, we can't just let PPO estimate the amplitudes. Thus we defined some amplitudes ourselves, and let the PPO choose from them. Per leading arm we added 3 choices for the amplitudes, one choice makes the brittle star walk in the direction of the leading arm, one turns slightly to the left and one turns slightly to the right.
 
+In case you are wondering what exactly we mean by "leading arm", below is a video showing this type of movement. This controller only had the ability to change the leading arm, there was no ability to adapt the amplitudes.
+
+{{< video src="/images/co/leading-arm.mp4" type="video/mp4">}}
+
 
 ## Rewards
 Our reward functions needs to make the connection between our observed angle and a good action that should be rewarded. We do this by rewarding every action that places the robot closer to the target. This is simply done by returning a reward based on the difference in distance to the target after the action and before. In our original reward we also greatly rewarded our Brittlestar when it reached the target. However it turns out that PPO is not good at handling a non-deterministic reward function that over-rewards a certain state.
