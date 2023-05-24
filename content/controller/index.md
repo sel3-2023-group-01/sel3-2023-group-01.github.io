@@ -35,12 +35,12 @@ This allows us to perform PPO without having to fully implement this ourselves. 
 This wasn't very succesful, as this algorithm (and deep RL algorithm in general) are very sensitive, and thus hard to get it to actually learn something.
 
 ## What now?
-Now we were ready to give the project some more thought and do some experiments.We'll explain the 3 important parts of RL: observations, actions and rewards. And what we changed for the PPO to work
+Now we were ready to give the project some more thought and do some experiments. We'll explain the 3 important parts of RL: observations, actions and rewards. And what we changed for the PPO to work
 
-### The observation space
+## The observation space
 We simplified our observation space in order to simplify the model input and to speed up the training process. Our observation space only contains a single parameter namely the normalized z angle towards the target. This is the angle between the fixed frontside (so not the front arm) of the robot and the target in a XY-plane. This means that the robot has no motion of its distance from the target, only a direction.
 
-### The action space
+## The action space
 We choose to try and mimic a realistic brittle star, which doesn't turn all that often. Instead it just elevates the arm closest to the direction it wants to go to, and walks in that direction. It only adjusts a little bit along the way. So we tried to simulate this. we gave our brittle star the ability to change his front arm, and walk into that direction. This would hopefully result in a Brittlestar that moves in a quick and very natural way, without the need to fully rotate when he wants to go in the opposite direction. 
 
 This means that our brittle star could use any one of its five arms as it's leading arm. The goal would be for this leading arm to be lifted up, while the other arms make the robot move towards the direction of the lifted arm. We also added the ability to adjust it's movement a little bit. So that he can slightly rotate to the left or slightly to the right (amplitudes).
@@ -58,7 +58,7 @@ As we use a discrete set of actions, we can't just let PPO estimate the amplitud
 
 In case you are wondering what exactly we mean by "leading arm", below is a video showing this type of movement. This controller only had the ability to change the leading arm, there was no ability to adapt the amplitudes.
 
-{{< video src="/images/co/leading-arm.mp4" type="video/mp4">}}
+{{< video src="/videos/co/leading-arm.webm" type="video/webm">}}
 
 
 ## Rewards
