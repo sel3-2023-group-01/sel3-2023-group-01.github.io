@@ -8,7 +8,7 @@ theme = "hello-friend-ng"
     homeSubtitle = "Software Engineering Lab 3 (2023)"
     enableThemeToggle = true
 
-    intro = "You definitely know SpongeBob, but do you know about other creatures that live under the sea? Like Brittle Stars? In this project we're going to help the Brittle Star become the fastest version of himself. We'll train him in some environments, optimise his morphology and learn him how to control his new body!"
+    intro = "You definitely know SpongeBob, but do you know about other creatures that live under the sea? Like brittle stars? In this project we're going to help the brittle star become the fastest version of himself. We'll train him in some environments, optimise his morphology and learn him how to control his new body!"
 
     [[params.social]]
     name = "github"
